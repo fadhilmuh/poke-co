@@ -2,23 +2,22 @@
 
 ## Contents
 
-- [Introduction](#INTRODUCTION)
-- [Implementation](#STEP-BY-STEP IMPLEMENTATION)
-- [Diagram](#DIAGRAM)
-- [Virtual-Environment](#WHY VIRTUAL ENVIRONMENT?)
-- [MVC,MVT,MVVM](WHAT ARE MVC, MVT, MVVM?)
+- [Introduction](#introduction)
+- [Step-by-Step Implementation](#step-by-step-implementation)
+- [Diagram](#diagram)
+- [Why Virtual Environment?](#why-virtual-environment)
+- [What Are MVC, MVT, MVVM?](#what-are-mvc-mvt-mvvm)
 
-## INTRODUCTION
+## Introduction
 
 Django is a high-level Python web framework that simplifies the process of building robust, scalable, and maintainable web applications. It was created with the goal of making web development faster and more efficient while promoting clean, reusable, and pragmatic code.
 
 ...to be continued
 
+## Step-by-Step Implementation
 
-## STEP-BY-STEP IMPLEMENTATION
+## Diagram
 
-## DIAGRAM
+## Why Virtual Environment?
 
-## WHY VIRTUAL ENVIRONMENT?
-
-## WHAT ARE MVC, MVT, MVVM?
+## What Are MVC, MVT, MVVM?
