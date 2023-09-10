@@ -1,5 +1,7 @@
 # TUGAS 2 - PBP
 
+Web Application: [Poké.co](https://poke-co.adaptable.app/main)
+
 ## Contents
 
 - [Introduction](#introduction)
@@ -9,8 +11,6 @@
 - [What Are MVC, MVT, MVVM?](#what-are-mvc-mvt-mvvm)
 
 ## Introduction
-
-Django is a high-level Python web framework that simplifies the process of building robust, scalable, and maintainable web applications. It was created with the goal of making web development faster and more efficient while promoting clean, reusable, and pragmatic code.
 
 ...to be continued
 
