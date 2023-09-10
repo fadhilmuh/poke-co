@@ -1,7 +1,5 @@
 # TUGAS 2 - PBP
 
-The web application regarding this repository is available at [this link](https://poke-co.adaptable.app/main/) 
-
 ## Contents
 
 - [Introduction](#introduction)
