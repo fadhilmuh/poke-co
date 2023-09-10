@@ -105,9 +105,6 @@ ENV/
 env.bak/ 
 venv.bak/ 
 
-# Assets
-main/static/
-
 # mkdocs documentation 
 /site 
 
