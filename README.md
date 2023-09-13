@@ -239,7 +239,7 @@ Setelah itu, *step-step* yang dilakukan antara lain:
     ```
 14. **Melakukan *Deployment***
 
-    Setelah semua tahap selesai, *deploy* aplikasi ke [Adaptable](adaptable.io).
+    Setelah semua tahap selesai, *deploy* aplikasi ke [Adaptable](https://adaptable.io/).
 
 
 ## Diagram *Framework*
