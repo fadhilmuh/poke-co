@@ -274,6 +274,8 @@ Ada beberapa alasan mengapa kita sangat disarankan atau diharuskan menggunakan v
 
     *Virtual environment* dapat membantu mencegah terjadinya masalah jika ada pembaruan atau perubahan yang perlu kita lakukan pada sebuah proyek, tanpa memengaruhi proyek lain yang menggunakan versi Python atau paket yang berbeda.
 
+Pengerjaan proyek Django tanpa menggunakan *virtual environment* tetap dapat dilaksanakan. Meskipun demikian, poin-poin di atas menjelaskan mengapa *virtual environment* sangat penting digunakan.
+
 ## Apa itu MVC, MVT, dan MVVM?
 
 MVC (Model-View-Controller), MVT (Model-View-Template), dan MVVM (Model-View-ViewModel) adalah tiga kerangka arsitektur yang umum digunakan dalam pengembangan perangkat lunak. Tujuan utamanya adalah membagi komponen-komponen inti dalam aplikasi dan mempermudah manajemen kode. Meskipun ketiganya memiliki kesamaan dalam pemisahan peran, terdapat perbedaan signifikan dalam bagaimana mereka mengatur dan berinteraksi antara satu sama lain.
