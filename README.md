@@ -4,7 +4,6 @@
 ```credential
 NAMA    : Fadhil Muhammad
 NPM     : 2206083464
-KELAS   : PBP-C
 ```
 
 ## Daftar Isi
@@ -18,7 +17,7 @@ KELAS   : PBP-C
 ## Pengenalan
 Tautan web: https://poke-co.adaptable.app/main
 
-[Poké.co](https://poke-co.adaptable.app/main) merupakan website dengan tema utama pengumpulan atau pengoleksian karakter-karakter Pokémon yang dibangun menggunakan Django sebagai frameworknya.
+[Poké.co](https://poke-co.adaptable.app/main) merupakan website dengan tema utama pengumpulan atau pengoleksian karakter-karakter Pokémon yang dibangun menggunakan Django untuk tugas kali ini.
 
 ## Langkah-Langkah Pengimplementasian
 Dalam proses pembuatan website ini, hal pertama yang dilakukan adalah membuat repositori baru di github sebagai tempat penyimpanan hasil pekerjaan.
@@ -272,6 +271,7 @@ Ada beberapa alasan mengapa kita sangat disarankan atau diharuskan menggunakan v
     Dengan menggunakan virtual environment, kita dapat mengelola dependensi proyek kita dengan lebih mudah. Kita dapat menginstal modul-modul Python yang diperlukan secara terpisah untuk setiap proyek. Selain itu, kita dapat dengan mudah membuat daftar dependensi proyek (biasanya disimpan dalam berkas `requirements.txt`) untuk mengulangi pengaturan proyek di *environment* lain atau bagi orang lain yang ingin bekerja pada proyek tersebut.
 
 3. **Keamanan**
+
     *Virtual environment* dapat membantu mencegah terjadinya masalah jika ada pembaruan atau perubahan yang perlu kita lakukan pada sebuah proyek, tanpa memengaruhi proyek lain yang menggunakan versi Python atau paket yang berbeda.
 
 ## Apa itu MVC, MVT, dan MVVM?
