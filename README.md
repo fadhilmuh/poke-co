@@ -297,6 +297,9 @@ Perbedaan utama antara ketiga pendekatan ini terletak pada cara mereka mengatur 
 ## Daftar Isi
 - [Langkah-Langkah Pengimplementasian](#langkah-langkah-pengimplementasian-1)
 - [Apa perbedaan antara form POST dan form GET dalam Django?](#apa-perbedaan-antara-form-POST-dan-form-GET=dalam-Django?)
+- [Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?](#apa-perbedaan-utama-antara-xml-json-dan-html-dalam-konteks-pengiriman-data)
+- [Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?](#mengapa-json-sering-digunakan-dalam-pertukaran-data-antara-aplikasi-web-modern)
+- [Postman](#postman)
 
 ## Langkah-Langkah Pengimplementasian
 ### Membuat `forms.py`
