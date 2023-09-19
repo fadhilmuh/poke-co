@@ -1,103 +1,178 @@
+{% extends "base.html" %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poké.co</title>
-    <style>
-        body, h1, h2, h5, p, footer {
-            margin: 0;
-            padding: 0;
-        }
+{% block content %}
 
-        /* Background color for the entire page */
-        body {
-            background-color: #f2f2f2;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Poké.co</title>
+        <style>
+            body, h1, h2, h5, p, footer {
+                margin: 0;
+                padding: 0;
+            }
 
-        /* header */
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
+            /* Background color for the entire page */
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
 
-        /* h1 in the header */
-        header h1 {
-            font-size: 36px;
-        }
+            /* header */
+            header {
+                background-color: #333;
+                color: white;
+                text-align: center;
+                padding: 20px;
+            }
 
-        /* Section containing player information */
-        section {
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 20px;
-            margin-top: 20px;
-        }
+            /* h1 in the header */
+            header h1 {
+                font-size: 36px;
+            }
 
-        /* h2 in sections */
-        section h2 {
-            font-size: 24px;
-            color: #333;
-        }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background-color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
 
-        /* h5 in sections */
-        section h5 {
-            font-size: 18px;
-            color: #555;
-        }
+            /* Style the table headers */
+            th {
+                background-color: #333;
+                color: white;
+                font-weight: bold;
+                padding: 10px;
+                text-align: left;
+            }
 
-        /* featured card section */
-        section img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px auto;
-        }
+            /* Style the table rows */
+            tr {
+                border-bottom: 1px solid #ddd;
+            }
 
-        /* footer */
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #555;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Welcome to Poké.co</h1>
-        <p>A Pokémon character-collecting game</p>
-    </header>
+            /* Style alternating table rows */
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
 
-    <section>
-        <h2>Player Information</h2>
-        <h5>Name:</h5>
-        <p>{{ name }}</p>
-        <h5>Class:</h5>
-        <p>{{ class }}</p>
-    </section>
+            /* Style table cells */
+            td {
+                padding: 10px;
+            }
 
-    <section>
-        <h2>Featured Character</h2>
-        <img src="{% static 'main/assets/Angry-Pikachu-Transparent.png' %}" alt="Pikachu">
-    </section>
+            /* Section containing player information */
+            section {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 20px;
+                margin-top: 20px;
+            }
 
-    <section>
-        <h2>Item Information</h2>
-        <h5>Name:</h5>
-        <p>{{ char_name }}</p>
-        <h5>Amount:</h5>
-        <p>{{ char_amount }}</p>
-        <h5>Description:</h5>
-        <p>{{ char_description }}</p>
-    </section>
+            /* h2 in sections */
+            section h2 {
+                font-size: 24px;
+                color: #333;
+            }
 
-    <footer>
-        <p>&copy; 2023 Fadhil Muhammad (2206083464). Pemrograman Berbasis Platform Gasal 23/24.</p>
-    </footer>
-</body>
-</html>
+            /* h5 in sections */
+            section h5 {
+                font-size: 18px;
+                color: #555;
+            }
+
+            /* featured card section */
+            section img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 20px auto;
+            }
+
+            /* footer */
+            footer {
+                text-align: center;
+                margin-top: 20px;
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Welcome to Poké.co</h1>
+            <p>A Pokémon character-collecting game</p>
+        </header>
+
+        <section>
+            <h2>Player Information</h2>
+            <h5>Name:</h5>
+            <p>{{ name }}</p>
+            <h5>Class:</h5>
+            <p>{{ class }}</p>
+        </section>
+
+        <section>
+            <h2>Featured Character</h2>
+            <p>Pikachu</p>
+            <img src="{% static 'main/assets/Angry-Pikachu-Transparent.png' %}" alt="Pikachu">
+        </section>
+
+        <section>
+            <h2>Featured Character Information</h2>
+            <h5>Name:</h5>
+            <p>{{ char_name }}</p>
+            <h5>Rarity:</h5>
+            <p>{{ char_rarity }}</p>
+            <h5>Description:</h5>
+            <p>{{ char_description }}</p>
+        </section>
+
+        <section>
+            <h2>Your Collections</h2>
+
+            <div style="overflow-y: auto;">
+                <table>
+                    <tr>
+                        <th>Timestamp (UTC+7)</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Rarity</th>
+                        <th>Power</th>
+                        <th>Description</th>
+                    </tr>
+                
+                    {% for item in items %}
+                    <tr>
+                        <td>{{item.date_added}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.rarity}}</td>
+                        <td>{{item.power}}</td>
+                        <td style="min-width: 500px;">{{item.description}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <br />
+            </div>
+        
+            <a href="{% url 'main:create_item' %}">
+                <button>
+                    Add New Character
+                </button>
+            </a>
+        </section>
+        
+        <footer>
+            <p>@ 2023 Fadhil Muhammad (2206083464). Pemrograman Berbasis Platform - Gasal 23/24.</p>
+        </footer>
+    </body>
+    </html>
+
+{% endblock content %}

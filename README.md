@@ -1,10 +1,11 @@
-# TUGAS 2 - PBP
-
-> Repositori tugas 2 PBP
+> Repositori tugas PBP
 ```credential
 NAMA    : Fadhil Muhammad
 NPM     : 2206083464
 ```
+
+<details>
+<summary style="color: white; font-size: 30px">Tugas 2</summary>
 
 ## Daftar Isi
 
@@ -24,7 +25,7 @@ Dalam proses pembuatan website ini, hal pertama yang dilakukan adalah membuat re
 
 Setelah itu, *step-step* yang dilakukan antara lain:
 
- 1. **Membuat Direktori Lokal Baru untuk Proyek Aplikasi**
+1. **Membuat Direktori Lokal Baru untuk Proyek Aplikasi**
  
     Langkah pertama adalah membuat direktori baru pada perangkat lokal sebagai direktori utama untuk pengerjaan proyek
 2. **Mengaktifkan *Virtual Environment* pada Direktori**
@@ -287,3 +288,245 @@ MVT, atau Model-View-Template, adalah varian dari MVC yang sering digunakan dala
 Sementara itu, MVVM adalah arsitektur yang lebih modern, sering digunakan dalam pengembangan aplikasi berbasis antarmuka pengguna, seperti aplikasi seluler atau desktop. Dalam MVVM, Model tetap mengelola data dan logika bisnis, tetapi ada tambahan komponen yang disebut ViewModel. ViewModel bertindak sebagai perantara antara Model dan View, mengubah data Model agar sesuai dengan tampilan yang diinginkan oleh View, dan mengelola tindakan yang dilakukan oleh pengguna.
 
 Perbedaan utama antara ketiga pendekatan ini terletak pada cara mereka mengatur peran dan tanggung jawab komponen-komponen utama dalam aplikasi. MVC dan MVT umumnya digunakan dalam konteks aplikasi web tradisional, sementara MVVM lebih sering diterapkan dalam aplikasi modern berbasis antarmuka pengguna. Semua arsitektur ini bertujuan untuk memudahkan pemeliharaan kode, meningkatkan skalabilitas, dan memahami konsep dalam pengembangan perangkat lunak, dengan pilihan tergantung pada jenis aplikasi yang dikembangkan dan preferensi pengembangnya.
+
+</details>
+
+<details>
+<summary style="color: white; font-size: 30px">Tugas 3</summary>
+
+## Daftar Isi
+- [Langkah-Langkah Pengimplementasian](#langkah-langkah-pengimplementasian-1)
+- [Apa perbedaan antara form POST dan form GET dalam Django?](#apa-perbedaan-antara-form-POST-dan-form-GET=dalam-Django?)
+
+## Langkah-Langkah Pengimplementasian
+### Membuat `forms.py`
+File `forms.py` dalam proyek Django digunakan untuk mendefinisikan formulir yang akan digunakan dalam aplikasi web. Formulir dapat dihubungkan dengan model Django untuk membuat, mengubah, atau menghapus objek model berdasarkan input dari pengguna. 
+
+Isi `forms.py`:
+```python
+from django.forms import ModelForm
+from main.models import Item
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ["name", "amount", "rarity", "power", "description"]
+```
+
+### Mengubah Isi File `views.py`
+Untuk menampilkan jumlah item yang ada pada models, tambahkan kode pada `views.py`agar jumlah item pada models dapat diakses.
+
+*Update* fungsi `create_item()` menjadi:
+```python
+def create_item(request):
+    total_characters = Item.objects.count()
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form, 'total_characters':total_characters}
+    return render(request, "create_item.html", context)
+```
+
+### Membuat HTML untuk Form
+
+Menambahkan `create_item.html` untuk tampilan form yang akan ditampilkan kepada user saat diakses. Untuk ini, django telah menyediakan opsi yang memudahkan kita dalam pembuatan laman formulir.
+
+Isi `create_item.html`:
+```html
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add New Character to Your List</h1>
+
+<form method="POST">
+    <p>You currently own a total of {{total_characters}} characters </p>
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Add Character"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+
+{% endblock %}
+```
+
+### Menambahkan `templates\base.html`
+Buat folder baru pada root directory bernama `templates` dan tambahkan file `base.html` di dalamnya. 
+
+Isi dari `base.html`:
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        {% block meta %}
+        {% endblock meta %}
+    </head>
+
+    <body>
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>
+```
+### Meng-*update* `main.html` pada Direktori `main\templates\`
+Untuk menampilkan data yang telah disubmit pada form, perlu dilakukan penambahan pada `main.html`. 
+
+Kode yang ditambahkan:
+```html
+...
+    ...
+        <section>
+            <h2>Your Collections</h2>
+
+            <div style="overflow-y: auto;">
+                <table>
+                    <tr>
+                        <th>Timestamp (UTC+7)</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Rarity</th>
+                        <th>Power</th>
+                        <th>Description</th>
+                    </tr>
+                
+                    {% for item in items %}
+                    <tr>
+                        <td>{{item.date_added}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.rarity}}</td>
+                        <td>{{item.power}}</td>
+                        <td style="min-width: 500px;">{{item.description}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <br />
+            </div>
+        
+            <a href="{% url 'main:create_item' %}">
+                <button>
+                    Add New Character
+                </button>
+            </a>
+        </section>
+    ...
+...
+```
+### Menambahkan View untuk XML dan JSON Serializer
+Untuk melihat data-data yang disimpan dalam bentuk XML atau JSOn, digunakan serializer. Untuk melihat hasil serializer dari XML atau JSON, tambahkan dua fungsi berikut pada `views.py`:
+```python
+def show_xml(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+dan tambahkan path berikut pada `urls.py` direktori aplikasi:
+```python
+...
+urlpatterns = [
+    ...
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    ...
+]
+...
+```
+Untuk menampilkan views dari `id` masing-masing data, tambahkan fungsi berikut pada `views.py`:
+```python
+def show_xml_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+dan path berikut pada `urls.py` aplikasi:
+```python
+...
+urlpatterns = [
+    ...
+    path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<int:id>/', show_json_by_id, name='show_json_by_id') 
+]
+...
+```
+
+
+## Apa perbedaan antara form POST dan form GET dalam Django?
+Dalam Django, form POST dan form GET memiliki beberapa perbedaan utama:
+
+1. **Form POST**: Form POST dalam Django dikembalikan menggunakan metode POST, di mana browser mengumpulkan data formulir, meng-*encode*-nya untuk transmisi, mengirimkannya ke server, dan kemudian menerima kembali responsnya1. Metode POST akan mengirimkan data atau nilai langsung ke file lain2. Pemakaian metode POST ini digunakan untuk mengirimkan data yang penting / kredensial dan data yang orang lain tidak boleh tau / *secret data*, seperti password, dan sebagainya2.
+
+2. **Form GET**: Sebaliknya, GET mengumpulkan data yang dikirimkan menjadi sebuah string, dan menggunakan ini untuk menyusun URL1. Metode GET akan menampilkan data/nilai pada URL, kemudian akan ditampung oleh action3.
+
+Secara umum, metode POST digunakan saat kita ingin mengirimkan data yang tidak boleh dilihat oleh pengguna lain (misalnya password), sedangkan metode GET digunakan saat kita ingin pengguna dapat melihat data yang dikirimkan (misalnya dalam pencarian).
+
+referensi: [Django - Working with forms](https://docs.djangoproject.com/en/4.2/topics/forms/)
+
+### Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?
+XML, JSON, dan HTML adalah tiga format yang sering digunakan dalam pengiriman data di web. Berikut adalah perbedaan utama antara ketiganya:
+
+1. XML (eXtensible Markup Language):
+
+    - XML adalah bahasa markah yang menyediakan aturan untuk menentukan data apa pun.
+    - XML menggunakan tanda untuk membedakan antara atribut data dan data aktual.
+    - XML merepresentasikan data dalam pola pohon.
+    - XML memisahkan data dari HTML.
+    - XML menyederhanakan proses perubahan platform.
+
+2. JSON (JavaScript Object Notation):
+    - JSON adalah format pertukaran data terbuka yang dapat dibaca baik oleh manusia maupun mesin
+    - JSON bersifat independen dari setiap bahasa pemrograman dan merupakan output API umum dalam berbagai aplikasi
+    - JSON menggunakan pasangan kunci-nilai untuk merepresentasikan data
+    - JSON mendukung dan didukung semua browser.
+
+3. HTML (HyperText Markup Language):
+
+    - HTML adalah bahasa markup standar untuk dokumen yang dirancang untuk ditampilkan di browser web.
+    HTML tidak dirancang sebagai format pertukaran data, tetapi sebagai format untuk menampilkan data, dengan fokus pada bagaimana data tampak bagi pengguna akhir.
+    - HTML menggunakan tag yang dikelilingi oleh tanda kurung sudut (< dan >) untuk membuat elemen.
+
+### Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
+
+Dalam konteks pengiriman data, baik XML dan JSON digunakan secara luas. Namun, JSON dianggap lebih efisien karena data direpresentasikan sebagai objek JavaScript, dan dengan demikian beberapa bit dilewatkan melalui kabel. Lebih sedikit waktu mesin diperlukan untuk pemrosesan data.
+
+Singkatnya, JSON adalah format pertukaran data yang lebih baik, sedangkan XML adalah format pertukaran dokumen yang lebih baik. HTML biasanya tidak digunakan untuk pertukaran data, tetapi lebih fokus pada menampilkan data ke pengguna.
+
+### Postman
+
+HTML
+
+![Alt Text](md_image/HTML.png)
+
+XML
+
+![Alt Text](md_image/XML.png)
+
+JSON
+
+![Alt Text](md_image/JSON.png)
+
+XML by ID
+![Alt text](md_image/XML_ID.png)
+
+JSON by ID
+![Alt text](md_image/JSON_ID.png)
+</details>
