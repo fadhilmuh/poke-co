@@ -489,16 +489,16 @@ XML, JSON, dan HTML adalah tiga format yang sering digunakan dalam pengiriman da
 
 1. XML (eXtensible Markup Language):
 
-    - XML adalah bahasa markah yang menyediakan aturan untuk menentukan data apa pun.
+    - XML adalah bahasa markup yang menyediakan aturan untuk menentukan data apa pun.
     - XML menggunakan tanda untuk membedakan antara atribut data dan data aktual.
-    - XML merepresentasikan data dalam pola pohon.
+    - XML merepresentasikan data dalam pola struktur *tree*.
     - XML memisahkan data dari HTML.
     - XML menyederhanakan proses perubahan platform.
 
 2. JSON (JavaScript Object Notation):
     - JSON adalah format pertukaran data terbuka yang dapat dibaca baik oleh manusia maupun mesin
     - JSON bersifat independen dari setiap bahasa pemrograman dan merupakan output API umum dalam berbagai aplikasi
-    - JSON menggunakan pasangan kunci-nilai untuk merepresentasikan data
+    - JSON menggunakan pasangan key-value untuk merepresentasikan data
     - JSON mendukung dan didukung semua browser.
 
 3. HTML (HyperText Markup Language):
