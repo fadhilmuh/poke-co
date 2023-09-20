@@ -319,18 +319,22 @@ class ProductForm(ModelForm):
 ### Mengubah Isi File `views.py`
 Untuk menampilkan jumlah item yang ada pada models, tambahkan kode pada `views.py`agar jumlah item pada models dapat diakses.
 
-*Update* fungsi `create_item()` menjadi:
+*Update* fungsi `show_main()` menjadi:
 ```python
-def create_item(request):
+def show_main(request):
     total_characters = Item.objects.count()
-    form = ProductForm(request.POST or None)
+    items = Item.objects.all()
+    context = {
+        'name':'Fadhil Muhammad',
+        'class':'PBP-B',
+        'char_name':'Pikachu',
+        'char_description':'Pikachu, the most popular character.',
+        'char_rarity':'Rare',
+        'total_characters':total_characters,
+        'items':items
+    }
 
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
-
-    context = {'form': form, 'total_characters':total_characters}
-    return render(request, "create_item.html", context)
+    return render(request, 'main.html', context)
 ```
 
 ### Membuat HTML untuk Form
@@ -344,7 +348,6 @@ Isi `create_item.html`:
 <h1>Add New Character to Your List</h1>
 
 <form method="POST">
-    <p>You currently own a total of {{total_characters}} characters </p>
     {% csrf_token %}
     <table>
         {{ form.as_table }}

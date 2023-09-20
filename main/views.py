@@ -7,6 +7,7 @@ from main.models import Item
 
 # Create your views here.
 def show_main(request):
+    total_characters = Item.objects.count()
     items = Item.objects.all()
     context = {
         'name':'Fadhil Muhammad',
@@ -14,20 +15,20 @@ def show_main(request):
         'char_name':'Pikachu',
         'char_description':'Pikachu, the most popular character.',
         'char_rarity':'Rare',
+        'total_characters':total_characters,
         'items':items
     }
 
     return render(request, 'main.html', context)
 
 def create_item(request):
-    total_characters = Item.objects.count()
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
         form.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
-    context = {'form': form, 'total_characters':total_characters}
+    context = {'form': form}
     return render(request, "create_item.html", context)
 
 def show_xml(request):

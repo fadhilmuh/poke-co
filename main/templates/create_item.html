@@ -3,7 +3,6 @@
 <h1>Add New Character to Your List</h1>
 
 <form method="POST">
-    <p>You currently own a total of {{total_characters}} characters </p>
     {% csrf_token %}
     <table>
         {{ form.as_table }}
