@@ -4,10 +4,12 @@ from django.core import serializers
 from main.forms import ProductForm
 from django.urls import reverse
 from main.models import Item
+from django.db.models import Sum
 
 # Create your views here.
 def show_main(request):
-    total_characters = Item.objects.count()
+    total_characters = Item.objects.count() or 0
+    total_pokemon = Item.objects.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
     items = Item.objects.all()
     context = {
         'name':'Fadhil Muhammad',
@@ -16,6 +18,7 @@ def show_main(request):
         'char_description':'Pikachu, the most popular character.',
         'char_rarity':'Rare',
         'total_characters':total_characters,
+        'total_pokemon':total_pokemon,
         'items':items
     }
 

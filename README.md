@@ -322,7 +322,8 @@ Untuk menampilkan jumlah item yang ada pada models, tambahkan kode pada `views.p
 *Update* fungsi `show_main()` menjadi:
 ```python
 def show_main(request):
-    total_characters = Item.objects.count()
+    total_characters = Item.objects.count() or 0
+    total_pokemon = Item.objects.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
     items = Item.objects.all()
     context = {
         'name':'Fadhil Muhammad',
@@ -331,6 +332,7 @@ def show_main(request):
         'char_description':'Pikachu, the most popular character.',
         'char_rarity':'Rare',
         'total_characters':total_characters,
+        'total_pokemon':total_pokemon,
         'items':items
     }
 
@@ -397,6 +399,7 @@ Kode yang ditambahkan:
     ...
         <section>
             <h2>Your Collections</h2>
+            <p>You currently own a total of {{total_characters}} characters and a total of {{total_pokemon}} Pokémons</p>
 
             <div style="overflow-y: auto;">
                 <table>
