@@ -116,6 +116,13 @@
             <p>{{ name }}</p>
             <h5>Class:</h5>
             <p>{{ class }}</p>
+            <h5>Last Login:</h5>
+            <p>{{ last_login }}</p>
+            <a href="{% url 'main:logout' %}">
+                <button>
+                    Logout
+                </button>
+            </a>
         </section>
 
         <section>
@@ -141,6 +148,7 @@
             <div style="overflow-y: auto;">
                 <table>
                     <tr>
+                        <th>Action</th>
                         <th>Timestamp (UTC+7)</th>
                         <th>Name</th>
                         <th>Amount</th>
@@ -150,10 +158,23 @@
                     </tr>
                 
                     {% for item in items %}
-                    <tr>
+                    <tr id="item-table">
+                        <td>
+                            <a href="{% url 'main:delete_item' item.id %}#item-table">
+                                <button>delete</button>
+                            </a>
+                        </td>
                         <td>{{item.date_added}}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.amount}}</td>
+                        <td id="item-{{item.id}}">{{item.name}}</td>
+                        <td style="display: flex; align-items: center;">
+                            <a href="{% url 'main:add_item' item.id %}#item-{{item.id}}">
+                                <button>+</button>
+                            </a>
+                            <p style="padding: 10px; padding-right: 10px;">{{item.amount}}</p>
+                            <a href="{% url 'main:subtract_item' item.id %}#item-{{item.id}}">
+                                <button>-</button>
+                            </a>
+                        </td>
                         <td>{{item.rarity}}</td>
                         <td>{{item.power}}</td>
                         <td style="min-width: 500px;">{{item.description}}</td>
