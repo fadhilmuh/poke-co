@@ -1,0 +1,101 @@
+body, h1, h2, h5, p, footer {
+    margin: 0;
+    padding: 0;
+}
+
+/* Background color for the entire page */
+body {
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* header */
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* h1 in the header */
+header h1 {
+    font-size: 36px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the table headers */
+th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style the table rows */
+tr {
+    border-bottom: 1px solid #ddd;
+}
+
+
+/* Style alternating table rows */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:last-child{
+    background-color: rgba(226, 177, 43, 0.3);
+}
+
+tr:hover{
+    background-color: rgb(226, 177, 43);
+}
+
+/* Style table cells */
+td {
+    padding: 10px;
+}
+
+/* Section containing player information */
+section {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* h2 in sections */
+section h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* h5 in sections */
+section h5 {
+    font-size: 18px;
+    color: #555;
+}
+
+/* featured card section */
+section img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+
+/* footer */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+}

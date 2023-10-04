@@ -1,0 +1,105 @@
+body{
+    display: flex;
+    align-items: center;
+}
+
+.add_item {
+    width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 5px solid #ffcb05;
+    border-radius: 10px;
+    background-image: url;
+    background-size: cover;
+    background-position: center;
+    background-color: black;
+    min-width: 50%;
+}
+
+h1 {
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+input[type=text], input[type=number], select {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #ffcb05;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type=submit] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffcb05;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    transform: scale(1.1);
+}
+
+/* Media query for screens smaller than 768px */
+@media screen and (max-width: 768px) {
+    .add_item {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    td {
+        padding: 5px;
+    }
+}
+
+/* Media query for screens smaller than 480px */
+@media screen and (max-width: 480px) {
+    .add_item {
+        width: 80%;
+        margin: 10px auto;
+        border: 3px solid #ffcb05;
+        border-radius: 5px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    td {
+        padding: 3px;
+    }
+
+    input[type=text], input[type=number], select {
+        font-size: 14px;
+    }
+
+    input[type=submit] {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+}

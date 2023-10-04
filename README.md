@@ -496,7 +496,7 @@ XML, JSON, dan HTML adalah tiga format yang sering digunakan dalam pengiriman da
 1. XML (eXtensible Markup Language):
 
     - XML adalah bahasa markup yang menyediakan aturan untuk menentukan data apa pun.
-    - XML menggunakan tanda untuk membedakan antara atribut data dan data aktual.
+    - XML menggunakan tkita untuk membedakan antara atribut data dan data aktual.
     - XML merepresentasikan data dalam pola struktur *tree*.
     - XML memisahkan data dari HTML.
     - XML menyederhanakan proses perubahan platform.
@@ -509,9 +509,9 @@ XML, JSON, dan HTML adalah tiga format yang sering digunakan dalam pengiriman da
 
 3. HTML (HyperText Markup Language):
 
-    - HTML adalah bahasa markup standar untuk dokumen yang dirancang untuk ditampilkan di browser web.
+    - HTML adalah bahasa markup stkitar untuk dokumen yang dirancang untuk ditampilkan di browser web.
     HTML tidak dirancang sebagai format pertukaran data, tetapi sebagai format untuk menampilkan data, dengan fokus pada bagaimana data tampak bagi pengguna akhir.
-    - HTML menggunakan tag yang dikelilingi oleh tanda kurung sudut (< dan >) untuk membuat elemen.
+    - HTML menggunakan tag yang dikelilingi oleh tkita kurung sudut (< dan >) untuk membuat elemen.
 
 ### Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
 
@@ -762,7 +762,7 @@ def subtract_item(request, item_id):
 
 # Pertanyaan
 ### Apa itu Django UserCreationForm, dan jelaskan apa kelebihan dan kekurangannya?
-`UserCreationForm` adalah salah satu dari built-in forms yang disediakan oleh Django untuk mengelola proses otentikasi pengguna. Form ini dirancang khusus untuk membuat pengguna baru (user registration). Dengan menggunakan `UserCreationForm`, kita dapat dengan mudah membuat halaman pendaftaran pengguna dalam aplikasi Django. Form ini secara otomatis meng-handle validasi, penyimpanan data pengguna, dan proses pembuatan akun. Kelebihan dari `UserCreationForm` adalah menyediakan proses pembuatan akun yang terstandardisasi dan sesuai dengan praktik keamanan yang baik. Kelemahannya adalah kemungkinan perlu disesuaikan untuk memenuhi kebutuhan khusus aplikasi.
+`UserCreationForm` adalah salah satu dari built-in forms yang disediakan oleh Django untuk mengelola proses otentikasi pengguna. Form ini dirancang khusus untuk membuat pengguna baru (user registration). Dengan menggunakan `UserCreationForm`, kita dapat dengan mudah membuat halaman pendaftaran pengguna dalam aplikasi Django. Form ini secara otomatis meng-handle validasi, penyimpanan data pengguna, dan proses pembuatan akun. Kelebihan dari `UserCreationForm` adalah menyediakan proses pembuatan akun yang terstkitardisasi dan sesuai dengan praktik keamanan yang baik. Kelemahannya adalah kemungkinan perlu disesuaikan untuk memenuhi kebutuhan khusus aplikasi.
 
 ### Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?
 1. Autentikasi adalah proses verifikasi identitas pengguna, yaitu memastikan bahwa pengguna adalah benar-benar pemilik akunnya. Dalam konteks Django, hal ini berarti memeriksa apakah pengguna memiliki akun yang valid dan telah memasukkan kredensial yang benar (seperti username dan password).
@@ -783,4 +783,83 @@ Penggunaan cookies dalam pengembangan web akan aman jika diterapkan dengan benar
 3. Session Hijacking: Potensi pencurian cookies sesi yang dapat digunakan oleh penyerang untuk mengakses akun pengguna.
 
 Cookies dapat dengan mudah diakses oleh pengguna melalui web, sehingga tidak cocok untuk menyimpan informasi yang sensitif. 
+</details>
+
 <details>
+<summary style="color: white; font-size: 30px">Tugas 5</summary>
+
+# Desain Web dengan CSS
+
+## Cara Implementasi
+
+Pada tugas ini, saya membuat desain web dengan menggunakan CSS untuk mempercantik tampilan laman web yang sudah saya buat sebelumnya.
+
+Saya membuat file CSS untuk setiap laman web yang saya buat. File CSS berisi aturan-aturan untuk mengatur gaya tampilan elemen-elemen HTML yang ada pada laman web. Saya menambahkan atribut class atau id pada tag HTML yang ingin saya beri gaya. Kemudian, saya menggunakan selector yang sesuai untuk menentukan elemen mana yang akan diberi gaya pada file CSS.
+
+## File CSS
+
+Berikut adalah file CSS yang saya buat untuk setiap laman web:
+
+- [create_item.css](main\static\main\css\item.css): File ini berisi gaya untuk laman web yang digunakan untuk membuat item baru. Saya mengatur warna latar belakang, font, margin, padding, border, dan lain-lain untuk elemen-elemen seperti form, input, button, dan label.
+- [login.css](main\static\main\css\login.css): File ini berisi gaya untuk laman web yang digunakan untuk login. Saya mengatur warna latar belakang, font, margin, padding, border, dan lain-lain untuk elemen-elemen seperti form, input, button, dan label.
+- [main.css](main\static\main\css\main.css): File ini berisi gaya untuk laman web utama yang menampilkan daftar item yang tersedia. Saya mengatur warna latar belakang, font, margin, padding, border, dan lain-lain untuk elemen-elemen seperti div, h1, h2, ul, li, a, dan img.
+- [register.css](main\static\main\css\register.css): File ini berisi gaya untuk laman web yang digunakan untuk registrasi. Saya mengatur warna latar belakang, font, margin, padding, border, dan lain-lain untuk elemen-elemen seperti form, input, button, dan label.
+
+Saya juga menambahkan beberapa gambar dari internet untuk membuat laman web menjadi lebih menarik.
+
+## Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+Dalam CSS, ada tiga jenis selector utama: **element selector**, **class selector**, dan **id selector**. 
+
+1. **Element Selector**: Selector ini digunakan untuk memilih elemen HTML berdasarkan nama elemennya. Misalnya, jika ingin menerapkan gaya yang sama ke semua elemen `<p>` di halaman web, kita dapat menggunakan element selector. Manfaatnya adalah dapat mengubah gaya semua elemen dengan jenis tertentu sekaligus.
+
+2. **Class Selector**: Selector ini digunakan untuk memilih elemen berdasarkan class-nya. Class selector sangat berguna ketika kita ingin menerapkan gaya yang sama ke sekelompok elemen tanpa memkitang jenis elemennya. kita dapat menggunakan class selector ketika kita memiliki beberapa elemen yang ingin diberi gaya yang sama.
+
+3. **ID Selector**: Selector ini digunakan untuk memilih satu elemen unik berdasarkan id-nya. ID selector biasanya digunakan ketika kita ingin menerapkan gaya khusus ke satu elemen saja di halaman web kita. Perlu diingat bahwa setiap id harus unik dan hanya dapat digunakan sekali dalam satu halaman.
+
+Pemilihan selector yang tepat tergantung pada kebutuhan dan struktur halaman web kita. Jika kita ingin menerapkan gaya yang sama ke banyak elemen, gunakan class selector. Jika kita ingin menerapkan gaya khusus ke satu elemen saja, gunakan id selector. Dan jika kita ingin mengubah gaya semua elemen dengan jenis tertentu, gunakan element selector.
+
+
+## Jelaskan HTML5 Tag yang kamu ketahui.
+
+HTML5 memperkenalkan sejumlah tag baru yang memberikan lebih banyak fleksibilitas dan interaktivitas dalam mendesain halaman web. Berikut adalah beberapa tag HTML5 yang saya ketahui:
+
+1. **`<!DOCTYPE html>`**: Tag ini digunakan untuk mendeklarasikan tipe dokumen dan versi HTML, dalam hal ini HTML5.
+
+2. **`<header>`**: Tag ini digunakan untuk merangkum konten pengantar atau navigasi. Biasanya berisi judul situs, logo, dan menu navigasi.
+
+3. **`<nav>`**: Tag ini digunakan untuk merangkum bagian navigasi situs web, biasanya berisi daftar tautan menu.
+
+4. **`<main>`**: Tag ini digunakan untuk konten utama dari halaman web yang unik dan tidak termasuk dalam konten yang diulang di seluruh situs web seperti header, footer, atau navigasi.
+
+5. **`<article>`**: Tag ini digunakan untuk merangkum konten mandiri yang dapat dipahami secara independen dari konten lainnya, seperti postingan blog atau berita.
+
+6. **`<section>`**: Tag ini digunakan untuk mengelompokkan konten terkait dalam suatu bagian dokumen.
+
+7. **`<aside>`**: Tag ini digunakan untuk konten yang sedikit terkait dengan konten utama sekitarnya, seperti sidebar atau iklan.
+
+8. **`<footer>`**: Tag ini digunakan untuk merangkum informasi penutup seperti informasi hak cipta, tautan ke kebijakan privasi, dll.
+
+9. **`<figure>` dan `<figcaption>`**: Tag ini digunakan untuk merangkum gambar, diagram, foto, kode, dll., dan judul atau keterangan yang terkait.
+
+10. **`<video>`, `<audio>`, dan `<source>`**: Tag ini digunakan untuk menyematkan media seperti video dan audio ke dalam halaman web.
+
+11. **`<img>`**: Tag ini digunakan untuk menyematkan gambar ke dalam halaman web.
+
+12. **`<div>`**: Tag ini umumnya digunakan sebagai container.
+
+## Jelaskan perbedaan antara margin dan padding.
+
+Margin dan padding adalah dua properti dalam CSS yang digunakan untuk mengendalikan ruang di sekitar elemen. Berikut adalah perbedaan antara keduanya:
+
+- **Margin**: Merupakan ruang di luar batas elemen. Margin tidak mempengaruhi ukuran elemen itu sendiri, tetapi menciptakan ruang ekstra di sekitarnya. Margin sering digunakan untuk membuat ruang antara elemen yang berbeda atau antara elemen dengan tepi browser.
+
+- **Padding**: Merupakan ruang di dalam batas elemen, antara batas dan konten elemen itu sendiri. Padding mempengaruhi ukuran elemen dan sering digunakan untuk memberikan ruang ekstra di dalam elemen, seperti membuat teks tidak menempel langsung ke batas elemen.
+
+Margin dan padding tidak mempengaruhi ukuran konten elemen itu sendiri, hanya ruang di sekitar kontennya. Juga, keduanya transparan, jadi warna latar belakang elemen atau halaman akan terlihat.
+
+## Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+Bootstrap memberikan komponen-komponen yang siap digunakan tanpa perlu kita ubah sedangkan tailwind memberikan template-template yang lebih sederhana yang harus kita kustomisasi terlebih dahulu sebelum digunakan. Jadi perbedaannya adalah tailwind lebih fleksibel dalam hal kustomisasi namun kurang cepat dalam hal implementasi sedangkan bootstrap lebih cepat dalam hal implementasi namun kurang fleksibel dalam hal kustomisasi.
+
+Kita bisa menggunakan tailwind ketika kita harus membuat website dengan desain yang rumit dengan waktu yang cukup panjang. Sedangkan kita bisa menggunakan bootstrap ketika kita harus membuat website dengan desain yang sederhana dengan waktu yang singkat.
+</details>

@@ -7,7 +7,7 @@ class Item(models.Model):
         ("Common",'Common'),
         ("Rare",'Rare'),
         ("Epic",'Epic'),
-        ("Lengedary",'Legendary'),
+        ("Legendary",'Legendary'),
         ('Unknown','Unknown')
     )
     
