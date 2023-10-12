@@ -4,6 +4,10 @@ NAMA    : Fadhil Muhammad
 NPM     : 2206083464
 ```
 
+# Tautan Aplikasi Web
+http://fadhil-muhammad23-tugas.pbp.cs.ui.ac.id/
+
+
 <details>
 <summary style="color: white; font-size: 30px">Tugas 2</summary>
 
@@ -1113,4 +1117,5 @@ Pertama, Fetch API adalah teknologi bawaan yang terdapat dalam semua peramban mo
 Di sisi lain, jQuery, meskipun merupakan library yang cukup kuat dan telah digunakan selama bertahun-tahun, menjadi kurang relevan dalam lingkungan pengembangan web saat ini karena ukurannya yang besar dan banyak fitur yang mungkin tidak digunakan. Penggunaan jQuery juga dapat memperlambat waktu muat halaman, terutama jika hanya digunakan untuk melakukan permintaan AJAX sederhana.
 
 Dengan pertimbangan ini, Fetch API lebih baik dalam pengembangan web modern karena lebih ringan, lebih efisien, dan memanfaatkan fitur terbaru dari JavaScript. Namun, keputusan akhir tergantung pada proyek dan preferensi pribadi. Jika kita perlu berinteraksi dengan API secara luas atau merasa nyaman dengan penggunaan jQuery, itu mungkin masih menjadi pilihan yang sah. Namun, dalam banyak kasus, Fetch API adalah pilihan yang lebih baik untuk pengembangan web yang lebih efisien dan responsif.
+
 </details>
