@@ -1,15 +1,14 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-    <html lang="en">
+{% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poké.co</title>
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+{% endblock meta %}
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Poké.co</title>
-        <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
-    </head>
-
+{% block content %}
     <body>
         <header>
             <h1>Welcome to Poké.co</h1>
@@ -47,58 +46,176 @@
             <p>{{ char_description }}</p>
         </section>
 
-        <section>
-            <h2>Your Collections</h2>
-            <p>You currently own a total of {{total_characters}} characters and a total of {{total_pokemon}} Pokémons</p>
+        <!-- The item card section -->
+        <section id="item_cards"></section> 
 
-            <div style="overflow-y: auto;">
-                <table>
-                    <tr>
-                        <th>Action</th>
-                        <th>Timestamp (UTC+7)</th>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Rarity</th>
-                        <th>Power</th>
-                        <th>Description</th>
-                    </tr>
-                
-                    {% for item in items %}
-                    <tr id="item-table">
-                        <td>
-                            <a href="{% url 'main:delete_item' item.id %}#item-table">
-                                <button>delete</button>
-                            </a>
-                        </td>
-                        <td>{{item.date_added}}</td>
-                        <td id="item-{{item.id}}">{{item.name}}</td>
-                        <td style="display: flex; align-items: center;">
-                            <a href="{% url 'main:add_item' item.id %}#item-{{item.id}}">
-                                <button>+</button>
-                            </a>
-                            <p style="padding: 10px; padding-right: 10px;">{{item.amount}}</p>
-                            <a href="{% url 'main:subtract_item' item.id %}#item-{{item.id}}">
-                                <button>-</button>
-                            </a>
-                        </td>
-                        <td>{{item.rarity}}</td>
-                        <td>{{item.power}}</td>
-                        <td style="min-width: 500px;">{{item.description}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                <br />
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Character</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" onsubmit="return false;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="name" name="name"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="col-form-label">Amount:</label>
+                                <input type="number" class="form-control" id="amount" name="amount"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rarity" class="col-form-label">Rarity:</label>
+                                <select class="form-select" id="rarity" name="rarity">
+                                    <option value="Unknown">Unknown</option>
+                                    <option value="Common">Common</option>
+                                    <option value="Rare">Rare</option>
+                                    <option value="Epic">Epic</option>
+                                    <option value="Legendary">Legendary</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="power" class="col-form-label">Power:</label>
+                                <input type="number" class="form-control" id="power" name="power"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="col-form-label">Description:</label>
+                                <textarea class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Character</button>
+                    </div>
+                </div>
             </div>
-        
+        </div>
+
+        <footer>
+            <p>@ 2023 Fadhil Muhammad (2206083464). Pemrograman Berbasis Platform - Gasal 23/24.</p>
+        </footer>
+    </body>
+
+    <script>
+        function deleteProduct(id) {
+            fetch("{% url 'main:delete_product_ajax' %}", {
+                method: "DELETE",
+                body: JSON.stringify({
+                    "character_id":id
+                })
+            }).then(refreshProducts)
+        }
+
+        function updateProductQty(id, modify){
+            fetch("{% url 'main:update_product_qty_ajax' %}", {
+                method: "UPDATE",
+                body: JSON.stringify({
+                    "character_id":id,
+                    "modify":modify
+                })
+            }).then(refreshProducts)
+        }
+
+        async function getItems() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+            document.getElementById("item_cards").innerHTML = ""
+
+            const Items = await getItems()
+            let total_characters = Items.length
+            let total_pokemon = 0
+            Items.forEach((item) => {
+                total_pokemon += item.fields.amount
+            })
+
+            let htmlString = `\n
+            <h2>Your Collections</h2>
+            <p>You currently own a total of ${total_characters} characters and a total of ${total_pokemon} Pokémons</p>
+            <div style="display: flex; flex-wrap: wrap;" id="collection_cards">\n
+            `
+            
+            Items.forEach((item) => {
+                let deleteItemURL = `{% url 'main:delete_item' 0 %}`.replace("0", item.pk)
+                let addItemURL = `{% url 'main:add_item' 0 %}`.replace("0", item.pk)
+                let subtractItemURL = `{% url 'main:subtract_item' 0 %}`.replace("0", item.pk)
+                htmlString += `\n
+                <div class="card" id="item-${item.pk}">
+                    <div class="card-header">
+                        <a>
+                            <button id="button_delete" data-item-pk=${item.pk}>delete</button>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">${item.fields.name}</div>
+                        <div class="card-info">
+                            <p>Date Added (UTC+7): ${item.fields.date_added}</p><br>
+                            <p>Amount: ${item.fields.amount}</p><br>
+                            <p>Rarity: ${item.fields.rarity}</p><br>
+                            <p>Power: ${item.fields.power}</p><br>
+                        </div>
+                        <div class="card-description">${item.fields.description}</div>
+                    </div>
+                    <div class="card-footer">
+                        <a>
+                            <button id="modify-qty" data-modifier="increment" data-item-pk=${item.pk}>+</button>
+                        </a>
+                        <p style="display: inline-block; margin: 0 10px;">${item.fields.amount}</p>
+                        <a>
+                            <button id="modify-qty" data-modifier="decrement" data-item-pk=${item.pk}>-</button>
+                        </a>
+                    </div>
+                </div>`;
+            })
+            
+            htmlString += `\n
+            </div>
             <a href="{% url 'main:create_item' %}">
                 <button>
                     Add New Character
                 </button>
             </a>
-        </section>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add New Character by AJAX
+            </button>
+            `
+
+            document.getElementById("item_cards").innerHTML = htmlString
+            document.querySelectorAll('#button_delete').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let itemPK = this.getAttribute('data-item-pk');
+                    deleteProduct(itemPK);
+                });
+            });
+
+            document.querySelectorAll("#modify-qty").forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let itemPK = this.getAttribute("data-item-pk")
+                    let modifier = this.getAttribute("data-modifier")
+                    updateProductQty(itemPK, modifier)
+                })
+            })
+        }
+
+
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+
         
-        <footer>
-            <p>@ 2023 Fadhil Muhammad (2206083464). Pemrograman Berbasis Platform - Gasal 23/24.</p>
-        </footer>
-    </body>
-</html>
+        document.getElementById("button_add").onclick = addProduct
+        refreshProducts()
+    </script>
+
+{% endblock content %}
