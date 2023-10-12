@@ -101,6 +101,7 @@
     </body>
 
     <script>
+        /*DELETE Method*/
         function deleteProduct(id) {
             fetch("{% url 'main:delete_product_ajax' %}", {
                 method: "DELETE",
@@ -110,9 +111,10 @@
             }).then(refreshProducts)
         }
 
+        /*PUT Method*/
         function updateProductQty(id, modify){
             fetch("{% url 'main:update_product_qty_ajax' %}", {
-                method: "UPDATE",
+                method: "PUT",
                 body: JSON.stringify({
                     "character_id":id,
                     "modify":modify
@@ -120,6 +122,18 @@
             }).then(refreshProducts)
         }
 
+        /*POST Method*/
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+        
+        /*GET Method*/
         async function getItems() {
             return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
         }
@@ -136,7 +150,7 @@
 
             let htmlString = `\n
             <h2>Your Collections</h2>
-            <p>You currently own a total of ${total_characters} characters and a total of ${total_pokemon} Pokémons</p>
+            <p id="qty-text">You currently own a total of ${total_characters} characters and a total of ${total_pokemon} Pokémons</p>
             <div style="display: flex; flex-wrap: wrap;" id="collection_cards">\n
             `
             
@@ -200,19 +214,17 @@
                     updateProductQty(itemPK, modifier)
                 })
             })
+            
+
+            let x = document.querySelectorAll(".card")
+            x[x.length - 1].style = "background-color: black; color: white;"
+
+            x = document.querySelectorAll(".card-header")
+            x[x.length - 1].style = "background-color: red;"
+            
+            x = document.querySelectorAll(".card-footer")
+            x[x.length - 1].style = "background-color: orange; color: black; border: 1px solid black"
         }
-
-
-        function addProduct() {
-            fetch("{% url 'main:add_product_ajax' %}", {
-                method: "POST",
-                body: new FormData(document.querySelector('#form'))
-            }).then(refreshProducts)
-
-            document.getElementById("form").reset()
-            return false
-        }
-
         
         document.getElementById("button_add").onclick = addProduct
         refreshProducts()

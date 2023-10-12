@@ -9,7 +9,7 @@ from main.models import Item
 from django.db.models import Sum
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt 
 import datetime
 import json
 
@@ -120,16 +120,15 @@ def get_product_json(request):
     product_item = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', product_item))
 
-
 @csrf_exempt
 def update_product_qty_ajax(request):
-    if request.method == 'UPDATE':
+    if request.method == 'PUT':
         data = json.loads(request.body)
         product_id = data.get('character_id')
         product = Item.objects.get(pk=product_id)
         if data.get("modify") == "increment": 
             product.amount += 1
-        else:
+        if data.get("modify") == "decrement":
             product.amount = max(1, product.amount - 1)
         product.save()
 

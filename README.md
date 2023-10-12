@@ -863,3 +863,254 @@ Bootstrap memberikan komponen-komponen yang siap digunakan tanpa perlu kita ubah
 
 Kita bisa menggunakan tailwind ketika kita harus membuat website dengan desain yang rumit dengan waktu yang cukup panjang. Sedangkan kita bisa menggunakan bootstrap ketika kita harus membuat website dengan desain yang sederhana dengan waktu yang singkat.
 </details>
+
+<details>
+<summary style="color: white; font-size: 30px">Tugas 6</summary>
+
+# JavaScript dan AJAX
+
+## AJAX GET
+
+Untuk mengubah bagian data *cards* agar dapat mendukung AJAX, tambahkan kode berikut pada `views.py`.
+
+```python
+def get_product_json(request):
+    product_item = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+```
+
+Lalu, tambahkan bagian `script` pada `main.html` pada direktori aplikasi main untuk melakukan pengambilan data dengan kode ini.
+
+```javascript
+async function getItems() {
+    return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+}
+```
+
+Untuk melakukan rendering template dari data yang diambil menggunakan AJAX, ubah konfigurasi html di file `main.html`, lalu tambahkan kode berikut pada bagian script pada `main.html`.
+```javascript
+async function refreshProducts() {
+    document.getElementById("item_cards").innerHTML = ""
+
+    const Items = await getItems()
+    let total_characters = Items.length
+    let total_pokemon = 0
+    Items.forEach((item) => {
+        total_pokemon += item.fields.amount
+    })
+
+    let htmlString = `\n
+    <h2>Your Collections</h2>
+    <p id="qty-text">You currently own a total of ${total_characters} characters and a total of ${total_pokemon} Pokémons</p>
+    <div style="display: flex; flex-wrap: wrap;" id="collection_cards">\n
+    `
+    
+    Items.forEach((item) => {
+        let deleteItemURL = `{% url 'main:delete_item' 0 %}`.replace("0", item.pk)
+        let addItemURL = `{% url 'main:add_item' 0 %}`.replace("0", item.pk)
+        let subtractItemURL = `{% url 'main:subtract_item' 0 %}`.replace("0", item.pk)
+        htmlString += `\n
+        <div class="card" id="item-${item.pk}">
+            <div class="card-header">
+                <a>
+                    <button id="button_delete" data-item-pk=${item.pk}>delete</button>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="card-title">${item.fields.name}</div>
+                <div class="card-info">
+                    <p>Date Added (UTC+7): ${item.fields.date_added}</p><br>
+                    <p>Amount: ${item.fields.amount}</p><br>
+                    <p>Rarity: ${item.fields.rarity}</p><br>
+                    <p>Power: ${item.fields.power}</p><br>
+                </div>
+                <div class="card-description">${item.fields.description}</div>
+            </div>
+            <div class="card-footer">
+                <a>
+                    <button id="modify-qty" data-modifier="increment" data-item-pk=${item.pk}>+</button>
+                </a>
+                <p style="display: inline-block; margin: 0 10px;">${item.fields.amount}</p>
+                <a>
+                    <button id="modify-qty" data-modifier="decrement" data-item-pk=${item.pk}>-</button>
+                </a>
+            </div>
+        </div>`;
+    })
+    
+    htmlString += `\n
+    </div>
+    <a href="{% url 'main:create_item' %}">
+        <button>
+            Add New Character
+        </button>
+    </a>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add New Character by AJAX
+    </button>
+    `
+
+    document.getElementById("item_cards").innerHTML = htmlString
+    document.querySelectorAll('#button_delete').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let itemPK = this.getAttribute('data-item-pk');
+            deleteProduct(itemPK);
+        });
+    });
+
+    document.querySelectorAll("#modify-qty").forEach(function(button) {
+        button.addEventListener('click', function() {
+            let itemPK = this.getAttribute("data-item-pk")
+            let modifier = this.getAttribute("data-modifier")
+            updateProductQty(itemPK, modifier)
+        })
+    })
+    
+
+    let x = document.querySelectorAll(".card")
+    x[x.length - 1].style = "background-color: black; color: white;"
+
+    x = document.querySelectorAll(".card-header")
+    x[x.length - 1].style = "background-color: red;"
+    
+    x = document.querySelectorAll(".card-footer")
+    x[x.length - 1].style = "background-color: orange; color: black; border: 1px solid black"
+}
+```
+
+Setelah itu, lakukan pemanggilan funcition `refreshProducts` agar konten web ter-render dengan benar.
+
+## AJAX POST
+
+Pertama-tama, menambahkan html ini pada `main.html` yang ada pada direktori `main/templates` sebagai modal yang digunakan untuk menambahkan item.
+
+```html
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Character</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rarity" class="col-form-label">Rarity:</label>
+                        <select class="form-select" id="rarity" name="rarity">
+                            <option value="Unknown">Unknown</option>
+                            <option value="Common">Common</option>
+                            <option value="Rare">Rare</option>
+                            <option value="Epic">Epic</option>
+                            <option value="Legendary">Legendary</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="power" class="col-form-label">Power:</label>
+                        <input type="number" class="form-control" id="power" name="power"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Character</button>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Selanjutnya, tambahkan kode berikut pada `views.py` yang ada pada direktori `main`.
+
+```python
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        rarity = request.POST.get("rarity")
+        power = request.POST.get("power")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Item(name=name, 
+                           amount=amount, 
+                           rarity=rarity,
+                           power=power,
+                           description=description, 
+                           user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+```
+Tidak lupa untuk mengimpor csfr_exempt dari django.
+
+Selanjutnya, tambahkan dan hubungkan path `create-product-ajax` pada urlpatterns yang ada di `urls.py`. Setelah itu tambahkan kode berikut pada script di `main.html`.
+
+```javascript
+function addProduct() {
+    fetch("{% url 'main:add_product_ajax' %}", {
+        method: "POST",
+        body: new FormData(document.querySelector('#form'))
+    }).then(refreshProducts)
+
+    document.getElementById("form").reset()
+    return false
+}
+```
+
+## collectstatic
+
+Jalankan 
+```shell
+python manage.py collectstatic
+```
+
+## Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+
+Asynchronous programming dan synchronous programming adalah dua pendekatan yang berbeda dalam pengembangan perangkat lunak. Dalam synchronous programming, tugas dieksekusi secara berurutan, satu per satu, yang dapat membuat program terasa lambat jika ada tugas yang memakan waktu lama. Sebaliknya, asynchronous programming memungkinkan eksekusi tugas-tugas berlanjut tanpa harus menunggu tugas sebelumnya selesai. Ini berguna untuk menjaga responsivitas aplikasi dan mengatasi operasi yang memakan waktu. Meskipun synchronous programming lebih mudah dipahami, asynchronous programming merupakan kunci dalam mengatasi tugas kompleks dan menjadikan aplikasi lebih efisien. 
+
+
+## Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+
+Paradigma event-driven programming adalah sebuah pendekatan dalam pemrograman yang didasarkan pada konsep penggerak acara atau "events". Dalam paradigma ini, program merespons acara atau kejadian tertentu yang terjadi secara asinkron, seperti interaksi pengguna dengan aplikasi, input dari perangkat luar, atau perubahan status sistem. Ketika suatu acara terjadi, program akan menjalankan fungsi atau prosedur tertentu yang telah ditetapkan sebelumnya sebagai respons terhadap acara tersebut.
+
+Salah satu contoh penerapan pada tugas ini adalah ketika user memencet tombol "add", "subtract", "delete", ataupun ketika user ingin menambahkan item.
+
+```javascript
+document.getElementById("button_add").onclick = addProduct
+```
+
+## Jelaskan penerapan asynchronous programming pada AJAX.
+
+AJAX, singkatan dari Asynchronous Javascript and XML, adalah teknik pengembangan web yang memungkinkan aplikasi web untuk bekerja secara asynchronous. Dalam konteks ini, asynchronous berarti bahwa AJAX dapat memproses setiap request (permintaan) yang datang ke server di sisi background. 
+
+Beberapa penerapan asynchronous programming pada AJAX meliputi pertukaran data, yang memungkinkan pengiriman dan penerimaan data dari server tanpa harus me-reload keseluruhan halaman. Ini berarti bahwa AJAX memungkinkan Asynchronous Calls ke server web sehingga peramban klien tidak perlu menunggu semua data. Selain itu, interaksi pengguna dengan AJAX memungkinkan pembaruan antarmuka pengguna sesuai kebutuhan sepotong demi sepotong, tanpa harus mengisi ulang keseluruhan halaman. Hal ini berkontribusi pada performa dan kecepatan yang lebih baik, karena postback halaman dihilangkan, sehingga aplikasi yang menggunakan AJAX akan lebih responsif, cepat, dan ramah pengguna. 
+
+Contoh penggunaan AJAX yang populer adalah fitur Google Autocomplete, yang memberikan saran kata kunci secara real-time ketika pengguna mengetik. Melalui asynchronous programming, AJAX menjadi kunci dalam menciptakan aplikasi web yang responsif dan efisien.
+
+## Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+
+
+Dalam penggunaan AJAX, terdapat dua teknologi utama yang digunakan, yaitu Fetch API dan library jQuery. Fetch API adalah bagian dari standar JavaScript modern yang diperkenalkan dengan ES6, sedangkan jQuery adalah library JavaScript yang telah ada sejak lama dan memiliki fitur-fitur untuk memudahkan penggunaan AJAX. Namun, ada beberapa perbandingan yang dapat membantu menentukan teknologi mana yang lebih baik digunakan.
+
+Pertama, Fetch API adalah teknologi bawaan yang terdapat dalam semua peramban modern, sehingga tidak memerlukan pengunduhan tambahan seperti jQuery. Ini berarti aplikasi web akan memiliki ukuran yang lebih kecil jika menggunakan Fetch API, yang dapat memengaruhi waktu muat halaman dan efisiensi. Selain itu, Fetch API lebih modern dan mendukung promise, yang mempermudah pengelolaan permintaan asinkron dan menangani respons dari server.
+
+Di sisi lain, jQuery, meskipun merupakan library yang cukup kuat dan telah digunakan selama bertahun-tahun, menjadi kurang relevan dalam lingkungan pengembangan web saat ini karena ukurannya yang besar dan banyak fitur yang mungkin tidak digunakan. Penggunaan jQuery juga dapat memperlambat waktu muat halaman, terutama jika hanya digunakan untuk melakukan permintaan AJAX sederhana.
+
+Dengan pertimbangan ini, Fetch API lebih baik dalam pengembangan web modern karena lebih ringan, lebih efisien, dan memanfaatkan fitur terbaru dari JavaScript. Namun, keputusan akhir tergantung pada proyek dan preferensi pribadi. Jika kita perlu berinteraksi dengan API secara luas atau merasa nyaman dengan penggunaan jQuery, itu mungkin masih menjadi pilihan yang sah. Namun, dalam banyak kasus, Fetch API adalah pilihan yang lebih baik untuk pengembangan web yang lebih efisien dan responsif.
+</details>
