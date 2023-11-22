@@ -32,6 +32,7 @@ CORS_ALLOW_HEADERS = [
     'access-control-allow-origin',
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://fadhil-muhammad23-tugas.pbp.cs.ui.ac.id']
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True
