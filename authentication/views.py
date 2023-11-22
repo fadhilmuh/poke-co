@@ -6,7 +6,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import User
 import json
 
-
+@csrf_exempt
 def login(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -33,7 +33,7 @@ def login(request):
             "message": "Login gagal, periksa kembali email atau kata sandi."
         }, status=401)
     
-
+@csrf_exempt
 def logout(request):
     username = request.user.username
 
@@ -50,9 +50,9 @@ def logout(request):
         "message": "Logout gagal."
         }, status=401)
 
+@csrf_exempt
 def register(request):
-    if request.method == 'POST':
-        # print(request.body)
+    try:
         data = json.loads(request.body)
 
         username = data["username"]
@@ -65,5 +65,5 @@ def register(request):
         new_user = User.objects.create_user(username = username, password = password1)
         new_user.save()
         return JsonResponse({"status": "success"}, status=200)
-    else:
+    except:
         return JsonResponse({"status": "error"}, status=401)
